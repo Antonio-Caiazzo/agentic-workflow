@@ -1,0 +1,42 @@
+# Independent diagnostic: GitHub Copilot CLI without gh-aw or its inference proxy.
+# Manually triggered only. Does not modify repository files or publish comments.
+name: Diagnostic - Copilot CLI direct (no gh-aw)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Autorizzo una sola richiesta AI diagnostica con il PAT personale"
+        required: true
+        type: boolean
+        default: false
+
+permissions: {}
+
+jobs:
+  copilot-direct:
+    name: direct-copilot-pat-inference
+    if: ${{ inputs.confirm == true }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 7
+    steps:
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install the same CLI version that worked locally
+        run: |
+          npm install -g @github/copilot@1.0.114
+          copilot --version
+
+      - name: Run one read-only inference without gh-aw
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          COPILOT_AUTO_UPDATE: "false"
+        run: |
+          if [ -z "$COPILOT_GITHUB_TOKEN" ]; then
+            echo "::error::Secret COPILOT_GITHUB_TOKEN non configurato"
+            exit 2
+          fi
+          copilot -p "Rispondi soltanto OK. Non leggere o modificare file e non usare strumenti." --model auto --no-ask-user
