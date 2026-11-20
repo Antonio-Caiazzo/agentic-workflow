@@ -1116,7 +1116,7 @@ jobs:
           COPILOT_AGENT_RUNNER_TYPE: STANDALONE
           COPILOT_DUMMY_BYOK: dummy-byok-key-for-offline-mode
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
-          COPILOT_MODEL: auto
+          COPILOT_MODEL: gpt-5-mini
           GH_AW_LLM_PROVIDER: github
           GH_AW_MAX_TURNS: 8
           GH_AW_PHASE: agent
