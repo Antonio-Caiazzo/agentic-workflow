@@ -1,3 +1,11 @@
+# Vecchio Pianificatore gh-aw (disattivato)
+
+Questo file conserva il sorgente originale di `gh-aw` per diagnosi e confronto storico. NON è un workflow attivo: è fuori da `.github/workflows/`.
+
+Il workflow compilato `piano.lock.yml` è stato rimosso dalla directory Actions, per evitare due esecuzioni AI sullo stesso evento `fase:piano`. La cronologia Git ne conserva una copia esatta. Il sostituto è `.github/workflows/piano-direct.yml`.
+
+---
+
 ---
 name: Pianificatore NeighborCare
 description: Propone un piano per le Issue con etichetta fase:piano, senza modificare file.

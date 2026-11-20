@@ -1,0 +1,38 @@
+# One-shot diagnostic; self-push trigger on file creation; no gh-aw and no checkout.
+# Compares the Copilot CLI version pinned by gh-aw with the successful CLI v1.0.114.
+name: Diagnostic - Copilot CLI 1.0.103 direct
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/diagnostic-copilot-103.yml
+
+permissions: {}
+
+jobs:
+  copilot-direct-103:
+    name: direct-copilot-103-pat-inference
+    runs-on: ubuntu-24.04
+    timeout-minutes: 7
+    steps:
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Copilot CLI 1.0.103
+        run: |
+          npm install -g @github/copilot@1.0.103
+          copilot --version
+
+      - name: Test one Copilot inference without gh-aw
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          COPILOT_AUTO_UPDATE: "false"
+        run: |
+          if [ -z "$COPILOT_GITHUB_TOKEN" ]; then
+            echo "::error::Missing COPILOT_GITHUB_TOKEN secret"
+            exit 2
+          fi
+          copilot -p "Rispondi soltanto OK. Non leggere o modificare file e non usare strumenti." --model auto --no-ask-user
