@@ -15,7 +15,7 @@ on:
     names: ["fase:piano"]
 engine:
   id: copilot
-  model: gpt-5-mini
+  model: auto
 permissions:
   contents: read
   issues: read
